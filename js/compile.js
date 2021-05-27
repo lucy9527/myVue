@@ -7,9 +7,9 @@ function Compile(vm) {
 
 Compile.prototype = {
     init: function () {
-        this.fragment = this.nodeFragment(this.el);
-        this.compileNode(this.fragment);
-        this.el.appendChild(this.fragment); //解析完成添加到元素中
+        this.fragment = this.nodeFragment(this.el); // copy一份副本
+        this.compileNode(this.fragment); // 递归遍历节点
+        this.el.appendChild(this.fragment); // 解析完成添加到元素中
     },
     nodeFragment: function (el) {
         const fragment = document.createDocumentFragment();
@@ -48,20 +48,25 @@ Compile.prototype = {
         let nodeAttrs = node.attributes;
         [...nodeAttrs].forEach(attr => {
             let name = attr.name;
-            if (this.isDirective(name)) {
-                let value = attr.value;
-                // 如果添加其它命令，可以在这里添加
-                switch(name){
-                    case 'v-model':
-                        this.compileModel(node, value);
-                        break;
-                    case 'v-show' :
-                        console.log(node,value);
-                        this.compileShow(node, value);
-                        break;
-                    default :
-                        break;
-                }
+            let value = attr.value;
+            // 如果添加其它命令，可以在这里添加
+            switch (this.isDirective(name)) {
+                case 'm':
+                    this.compileModel(node, value);
+                    break;
+                case 's':
+                    this.compileShow(node, value);
+                    break;
+                case 'o':
+                    name = name.split(':')[1]
+                    this.compileOn(node , name , value)
+                    break;
+                case 'o@':
+                    name = name.split('@')[0]
+                    this.compileOn(node , name , value)
+                    break;
+                default:
+                    break;
             }
         });
     },
@@ -83,11 +88,16 @@ Compile.prototype = {
             this.vm.$data[prop] = newValue;
         });
     },
-    compileShow : function( node , prop){
+    compileShow: function (node, prop) {
         let isShow = this.vm.$data[prop]
-        this.updateShow(node,isShow)
-        new Watcher(this.vm , prop , (value)=>{
-            this.updateShow(node,value)
+        this.updateShow(node, isShow)
+        new Watcher(this.vm, prop, (value) => {
+            this.updateShow(node, value)
+        })
+    },
+    compileOn: function (node, eType , prop) {
+        node.addEventListener(eType , () => {
+            this.vm.$methods[prop]()
         })
     },
     compileView: function (node, prop) {
@@ -105,12 +115,21 @@ Compile.prototype = {
     updateView: function (node, value) {
         node.textContent = typeof value === 'undefined' ? '' : value;
     },
-    updateShow: function(node, value){
-        console.log( node,value , '????');
+    updateShow: function (node, value) {
         node.style.display = !value ? 'none' : 'block'
     },
     isDirective: function (attr) {
-        return attr.indexOf('v-') !== -1;
+        if (attr.startsWith('v-model')) {
+            return 'm'
+        } else if (attr.startsWith('v-show')) {
+            return 's'
+        } else if (attr.startsWith('v-on')) {
+            return 'o'
+        }else if(attr.startsWith('@')){
+            return 'o@'
+        }
+        return -1
+        // return attr.indexOf('v-') !== -1 || attr.startsWith('v-on') || attr.startsWith('@');
     },
 
     isElementNode: function (node) {
