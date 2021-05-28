@@ -97,7 +97,8 @@ Compile.prototype = {
     },
     compileOn: function (node, eType , prop) {
         node.addEventListener(eType , () => {
-            this.vm.$methods[prop]()
+            console.log(this.vm);
+            this.vm.$methods[prop].bind(this.vm)()
         })
     },
     compileView: function (node, prop) {

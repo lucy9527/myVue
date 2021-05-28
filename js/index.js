@@ -2,7 +2,7 @@
  * @Author: luhongxuant
  * @Date: 2021-05-17 10:23:01
  * @LastEditors: luhongxuan
- * @LastEditTime: 2021-05-27 17:54:28
+ * @LastEditTime: 2021-05-28 11:00:08
  * @Description: Do no edit
  */
 function Mvue(options, prop) {
@@ -23,7 +23,9 @@ Mvue.prototype.init = function () {
     observer(this.$data);
     new Compile(this);
 }
+
 Mvue.prototype.proxyData = function (key) {
+    // proxy 代理，this.name 代理 this.$data.name
     Object.defineProperty(this, key, {
         get: function () {
             console.log('index');
