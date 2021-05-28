@@ -25,6 +25,6 @@
 ```
 new Mvue({
       // 相当于 mounted: function mounted(){}
-			mounted(){}
+      mounted(){}
 });
 ```
