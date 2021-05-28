@@ -8,6 +8,8 @@
 ### Observer：Object.defineProperty 数据劫持,
 
 ### Dep：订阅器 Watcher 的容器
++ 属性data的每一个key都会添加独立的dep
+  + 如果碰到 Object ，会继续递归去添加 dep   
 
 ### Watcher：update的容器，两种类型：
 ##### DOM 元素变化 => 原生监听事件 => $data属性变化 
