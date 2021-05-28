@@ -9,7 +9,8 @@ Watcher.prototype.update = function () {
     const oldVal = this.value;
     if (value !== oldVal) {
         this.value = value;
-        this.callback(value);
+        this.callback(value,oldVal);
+        // newVal oldVal 都传，需要在自己监听的回调函数中 加入第二个参数（比如 watch 属性）
     }
 }
 Watcher.prototype.get = function () {

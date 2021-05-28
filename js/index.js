@@ -2,7 +2,7 @@
  * @Author: luhongxuant
  * @Date: 2021-05-17 10:23:01
  * @LastEditors: luhongxuan
- * @LastEditTime: 2021-05-28 13:24:59
+ * @LastEditTime: 2021-05-28 16:42:14
  * @Description: Do no edit
  */
 function Mvue(options, prop) {
@@ -37,12 +37,12 @@ Mvue.prototype.proxyData = function (key) {
     });
 }
 
+// MyVue属性 watch 初始化
 Mvue.prototype.observerWatch = function (watchers) { 
     let keys = Object.keys(watchers)
     keys.forEach( key => {
-        console.log(key, watchers[key] , '???///');
-        new Watcher( this , key , (value)=>{
-            watchers[key].bind(this)(value)
+        new Watcher( this , key , (value , oldVal )=>{
+            watchers[key].bind(this)(value , oldVal)
         })
     })
 }

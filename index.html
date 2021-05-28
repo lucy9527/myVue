@@ -62,8 +62,8 @@
 				}
 			},
 			watch:{
-				witness(newval ){
-					console.log(newval);
+				witness(newval,oldVal ){
+					console.log(newval , oldVal);
 					if(newval === 'alive'){
 						this.taskStatus = `证人${newval}，任务继续执行`
 					}else if(newval === 'dead'){
