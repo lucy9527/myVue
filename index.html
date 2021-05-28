@@ -29,14 +29,17 @@
 
 <body>
 	<div id="app">
-		<!-- <input class="form-control" v-model="name" type="text">
+		<input class="form-control" v-model="name" type="text">
 		<h5>{{name}}</h5>
 		<div id="showBox" v-show="name">
 			<p>测试v-show</p>
-		</div> -->
+		</div>
 		<button v-on:click="clickBtn">击毙证人</button>
 		<div id="showBox">
 			<p>{{sign}}</p>
+		</div>
+		<div id="showBox">
+			<p>{{taskStatus}}</p>
 		</div>
 	</div>
 	<script src="./js/observer.js"></script>
@@ -49,7 +52,8 @@
 			data: {
 				name: "我是摩登",
 				witness : "alive",
-				sign: ''
+				sign: '',
+				taskStatus:''
 			},
 			methods:{
 				clickBtn(){
@@ -58,11 +62,12 @@
 				}
 			},
 			watch:{
-				witness(newval , oldval){
+				witness(newval,oldVal ){
+					console.log(newval , oldVal);
 					if(newval === 'alive'){
-						this.sign = `证人-${this.name}生命特征正常，任务继续执行`
+						this.taskStatus = `证人${newval}，任务继续执行`
 					}else if(newval === 'dead'){
-						this.sign = `证人-${this.name}生命特征消失，任务中断`
+						this.taskStatus = `证人${newval}，任务失败`
 					}
 				}
 			}
