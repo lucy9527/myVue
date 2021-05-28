@@ -15,3 +15,16 @@
 ### Watcher：update的容器，两种类型：
 ##### DOM 元素变化 => 原生监听事件 => $data属性变化 
 ##### $data属性变化 => 监听器 => DOM元素重新渲染
+
+
+
+<hr>
+
+#### ES6允许在对象属性名与value变量名相同二点情况可简写
+
+```
+new Mvue({
+      // 相当于 mounted: function mounted(){}
+			mounted(){}
+});
+```
